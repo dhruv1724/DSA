@@ -24,13 +24,39 @@ public:
         int way2=find(coins,amount,i+1,dp);
         dp[i][amount]=min(way1,way2);
         return dp[i][amount];
+    } 
+    int findUsingTab(vector<int>&coins,int amount){
+        vector<vector<int>>dp(coins.size(),vector<int>(amount+1,INT_MAX));
+        //base case
+        //last row mei jahan bhi amount coins[i] se divisible hoga
+        int n=coins.size();
+        for(int i=0;i<=amount;i++){
+            if(i % coins[n-1]==0){
+                dp[n-1][i]= i/coins[n-1];
+            }
+        }
+        for(int i=0;i<n;i++){
+            dp[i][0]=0;
+        }
+        for(int i=n-2;i>=0;i--){
+            for(int j=0;j<=amount;j++){
+                int way1=INT_MAX;
+                if(j>=coins[i]){
+                    //dp ki call tbhi jayegi when index is in bounds for amount
+                    way1=dp[i][j-coins[i]]!=INT_MAX ? 1+dp[i][j-coins[i]]:INT_MAX;
+                }
+                int way2=dp[i+1][j];
+                dp[i][j]=min(way1,way2);
+            }
+        }
+        return dp[0][amount];
     }
     int coinChange(vector<int>& coins, int amount) {
         //take or not take
         int i=0;
         sort(coins.begin(),coins.end());
-        vector<vector<int>>dp(coins.size(),vector<int>(amount+1,-1));
-        int ans=find(coins,amount,i,dp);
+        //vector<vector<int>>dp(coins.size(),vector<int>(amount+1,-1));
+        int ans=findUsingTab(coins,amount);
         if(ans==INT_MAX) return -1;
         return ans;
     }
