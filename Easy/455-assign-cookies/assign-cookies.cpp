@@ -1,29 +1,27 @@
 class Solution {
 public:
     int findContentChildren(vector<int>& g, vector<int>& s) {
-        //child will be content if s[j]>=g[i]
-        //for every child find a greater cookie
-        //for every child find a greater or equal unique element in s
+        //maximum content will be when child receives cookie just equal or nearest to greed factor
         sort(g.begin(),g.end());
         sort(s.begin(),s.end());
-        int ans=0;
-        vector<bool>given(s.size(),false);
+        //ek loop chlao hr child ke liye
+        //agar usse bda mil gya add it
+        //agar nhi mila->baaki ke liye bhi nhi milega
         int j=0;
+        int ans=0;
         for(int i=0;i<g.size();i++){
-            while(j<s.size() && s[j]<g[i]){
+            int greed=g[i];
+            while(j<s.size() && greed>s[j]){
                 j++;
             }
-            //yahan pr ya toh j out of bounds ya condition meet ho gyi
-
             if(j==s.size()){
+                //nhi mila iske liye cookie 
                 break;
             }
-            if(s[j]>=g[i]){
-                j++;
-                ans++;
-                continue;
+            if(s[j]>= greed){
+                ans+=1; //1 child satisfied
+                j++;//agle child ke lie agle j se
             }
-          
         }
         return ans;
     }
