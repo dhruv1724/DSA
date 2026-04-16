@@ -1,20 +1,15 @@
 class Solution {
 public:
     int removeElement(vector<int>& nums, int val) {
-        //jb bhi val mile shift it right
-        stack<int>s;
-        for(auto i:nums){
-            if(i==val){
-                continue;
-            }else{
-                s.push(i);
+        int k = 0; // position for next valid element
+
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] != val) {
+                nums[k] = nums[i];
+                k++;
             }
         }
-        nums.clear();
-        while(!s.empty()){
-            nums.push_back(s.top());
-            s.pop();
-        }
-        return nums.size();
+
+        return k;
     }
 };
